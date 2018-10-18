@@ -183,7 +183,7 @@ func createMysqlConfigFile(file string, perm os.FileMode) error {
 	for k, v := range envs {
 		k1 := strings.ToLower(k)
 		if strings.HasPrefix(k1, "mysqlc_") {
-			k2 := k1[6:]
+			k2 := k1[7:]
 			index := strings.Index(k2, "_")
 			if index != -1 {
 				module := k2[:index]
@@ -215,7 +215,7 @@ func createRedisConfigFile(file string, perm os.FileMode) error {
 	for k, v := range envs {
 		k1 := strings.ToLower(k)
 		if strings.HasPrefix(k1, "redisc_") {
-			k2 := k1[6:]
+			k2 := k1[7:]
 			configs[k2] = v
 		}
 	}
