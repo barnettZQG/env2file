@@ -175,14 +175,14 @@ func getEnvs() map[string]string {
 }
 
 //createMysqlConfigFile create mysql config file by env
-//eg. MYSQL_MYSQLD_PORT => [mysqld] port
-//eg. MYSQL_MYSQLD_DATADIR => [mysqld] datadir
+//eg. MYSQLC_MYSQLD_PORT => [mysqld] port
+//eg. MYSQLC_MYSQLD_DATADIR => [mysqld] datadir
 func createMysqlConfigFile(file string, perm os.FileMode) error {
 	envs := getEnvs()
 	var configs = make(map[string]map[string]string)
 	for k, v := range envs {
 		k1 := strings.ToLower(k)
-		if strings.HasPrefix(k1, "mysql_") {
+		if strings.HasPrefix(k1, "mysqlc_") {
 			k2 := k1[6:]
 			index := strings.Index(k2, "_")
 			if index != -1 {
@@ -208,13 +208,13 @@ func createMysqlConfigFile(file string, perm os.FileMode) error {
 }
 
 //createRedisConfigFile create redis config file by env
-//eg. REDIS_PORT=6379 => port 6379
+//eg. REDISC_PORT=6379 => port 6379
 func createRedisConfigFile(file string, perm os.FileMode) error {
 	envs := getEnvs()
 	var configs = make(map[string]string)
 	for k, v := range envs {
 		k1 := strings.ToLower(k)
-		if strings.HasPrefix(k1, "redis_") {
+		if strings.HasPrefix(k1, "redisc_") {
 			k2 := k1[6:]
 			configs[k2] = v
 		}

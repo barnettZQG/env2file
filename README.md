@@ -19,3 +19,20 @@ GLOBAL OPTIONS:
    --help, -h     show help
    --version, -v  print the version
 ```
+## 生成指定格式的配置文件
+
+### 关于生成mysql配置文件
+读取以`MYSQLC_`开头的环境变量，以下划线分割，第二部分为配置块名称，比如mysqld 或者client. 第三部分为配置名
+例如： MYSQLC_MYSQLD_PORT = 3306
+custom.cnf:
+```
+[mysqld]
+ port = 3306
+```
+### 关于生成redis配置文件
+读取以`REDISC_`开头的环境变量，以下划线分割,第二部分为配置名
+例如： REDISC_PORT = 6379
+custom.conf:
+```
+port 6379
+```
