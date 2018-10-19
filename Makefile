@@ -1,8 +1,8 @@
 
 test-mysql: localbuild
-	MYSQL_MYSQLD_PORT=3306 MYSQLC_MYSQLD_read_buffer_size=2M MYSQL_MYSQLD_DATADIR=/data/cc build/env2file cre --path ./test/mysql/custom.cnf --format mysql	
+	HOST_NAME=mysql11 MYSQLC_MYSQLD_PORT=3306 MYSQLC_MYSQLD_read_buffer_size=2M MYSQLC_MYSQLD_SERVER_ID=${HOST_NAME} MYSQL_MYSQLD_DATADIR=/data/cc build/env2file cre --path ./test/mysql/custom.cnf --format mysql	
 test-redis: localbuild
-	REDIS_PORT=6379 REDIS_TIMEOUT=0 build/env2file cre --path ./test/redis/custom.conf --format redis
+	REDISC_PORT=6379 REDISC_TIMEOUT=0 build/env2file cre --path ./test/redis/custom.conf --format redis
 localbuild:
 	go build -o build/env2file
 release:

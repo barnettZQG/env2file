@@ -19,8 +19,9 @@ GLOBAL OPTIONS:
    --help, -h     show help
    --version, -v  print the version
 ```
-## 生成指定格式的配置文件
 
+## 生成指定格式的配置文件
+`env2file create` 命令根据指定规范生成配置文件,现支持 mysql redis and default
 ### 关于生成mysql配置文件
 读取以`MYSQLC_`开头的环境变量，以下划线分割，第二部分为配置块名称，比如mysqld 或者client. 第三部分为配置名
 例如： MYSQLC_MYSQLD_PORT = 3306
@@ -36,3 +37,15 @@ custom.conf:
 ```
 port 6379
 ```
+
+### 关于生成默认配置文件
+读取以`C_`开头的环境变量，以下划线分割,第二部分为配置名
+例如： C_MYNAME = barnett
+custom.conf:
+```
+myname=barnett
+```
+以上类型均支持值热渲染,即如果在环境变量值中具有 ${XXX} 的规范字符串，将继续渲染值，使用对应的环境变量，仅支持一级渲染。
+
+## 模版配置文件重写
+`env2file conversion` 命令根据指定的配置文件模版，需要渲染的变量使用 ${XXX} 的形式定义。工具将根据从环境变量中获取值来渲染并重写文件，仅支持一级渲染。

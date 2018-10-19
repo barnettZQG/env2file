@@ -122,6 +122,10 @@ func getCommands() (cmds []cli.Command) {
 				if err := createRedisConfigFile(filepath, 000000000000|os.FileMode(perm)); err != nil {
 					return err
 				}
+			default:
+				if err := createDefaultConfigFile(filepath, 000000000000|os.FileMode(perm)); err != nil {
+					return err
+				}
 			}
 			return nil
 		},
@@ -187,10 +191,15 @@ func createMysqlConfigFile(file string, perm os.FileMode) error {
 			index := strings.Index(k2, "_")
 			if index != -1 {
 				module := k2[:index]
-				if c, ok := configs[module]; ok {
-					c[k2[index+1:]] = v
-				} else {
-					configs[module] = map[string]string{k2[index+1:]: v}
+				if module != "" {
+					k3 := k2[index+1:]
+					if k3 != "" {
+						if c, ok := configs[module]; ok {
+							c[k3] = handleConvValue(v)
+						} else {
+							configs[module] = map[string]string{k3: handleConvValue(v)}
+						}
+					}
 				}
 			}
 		}
@@ -216,7 +225,9 @@ func createRedisConfigFile(file string, perm os.FileMode) error {
 		k1 := strings.ToLower(k)
 		if strings.HasPrefix(k1, "redisc_") {
 			k2 := k1[7:]
-			configs[k2] = v
+			if k2 != "" {
+				configs[k2] = handleConvValue(v)
+			}
 		}
 	}
 	writer := bytes.NewBuffer(nil)
@@ -225,4 +236,38 @@ func createRedisConfigFile(file string, perm os.FileMode) error {
 	}
 	ioutil.WriteFile(file, writer.Bytes(), perm)
 	return nil
+}
+
+//createDefaultConfigFile create default format config
+//eg. C_MYNAME=barnett >  myname = barnett
+func createDefaultConfigFile(file string, perm os.FileMode) error {
+	envs := getEnvs()
+	var configs = make(map[string]string)
+	for k, v := range envs {
+		k1 := strings.ToLower(k)
+		if strings.HasPrefix(k1, "c_") {
+			k2 := k1[7:]
+			if k2 != "" {
+				configs[k2] = handleConvValue(v)
+			}
+		}
+	}
+	writer := bytes.NewBuffer(nil)
+	for k, v := range configs {
+		writer.WriteString(fmt.Sprintf("%s=%s \n", k, v))
+	}
+	ioutil.WriteFile(file, writer.Bytes(), perm)
+	return nil
+}
+
+//handleConvValue conv env value.
+func handleConvValue(source string) string {
+	resultKey := reg.FindAllString(source, -1)
+	for _, rk := range resultKey {
+		value := os.Getenv(GetConfigKey(rk))
+		if value != "" {
+			source = strings.Replace(source, rk, value, -1)
+		}
+	}
+	return source
 }
