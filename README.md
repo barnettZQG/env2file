@@ -1,6 +1,11 @@
 ## 简介
  由环境变量生成配置文件的命令行工具，常用于集成的Docker容器中，容器启动后、服务真正进程启动前执行。
 
+## 安装
+
+```
+wget https://github.com/barnettZQG/env2file/releases/download/v0.1/env2file-linux
+```
 ## 使用说明
 
 ```
