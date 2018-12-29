@@ -10,9 +10,9 @@ wget https://github.com/barnettZQG/env2file/releases/download/0.1.1/env2file-lin
 
 docker环境
 ```
-docker pull barnettzqg/env2file
+docker pull barnett/env2file
 # test
-docker run -it --rm barnettzqg/env2file env2file
+docker run -it --rm barnett/env2file env2file
 ```
 ## 使用说明
 
