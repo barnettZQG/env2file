@@ -8,4 +8,6 @@ localbuild:
 release:
 	docker run --rm -it -v `pwd`:/go/src/github.com/barnettZQG/env2file -w /go/src/github.com/barnettZQG/env2file golang:1.11 go build -ldflags " -w" -o build/env2file-linux
 	docker run --rm -e GOOS=windows -it -v `pwd`:/go/src/github.com/barnettZQG/env2file -w /go/src/github.com/barnettZQG/env2file golang:1.11 go build -ldflags " -w" -o build/env2file-win.exe
+image: 
+	docker build -t barnettzqg/env2file .	
 	

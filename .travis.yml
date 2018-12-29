@@ -1,0 +1,12 @@
+sudo: required
+
+services:
+  - docker
+
+git:
+  depth: 1
+
+script:
+- make image
+- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+- docker push barnettzqg/env2file

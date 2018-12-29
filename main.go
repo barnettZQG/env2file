@@ -32,6 +32,7 @@ import (
 )
 
 var version string
+var reg = regexp.MustCompile(`(?U)\$\{.*\}`)
 
 func main() {
 	app := cli.NewApp()
@@ -45,8 +46,6 @@ func main() {
 		os.Exit(1)
 	}
 }
-
-var reg = regexp.MustCompile(`(?U)\$\{.*\}`)
 
 func getCommands() (cmds []cli.Command) {
 	cmds = append(cmds, cli.Command{
@@ -142,6 +141,43 @@ func GetConfigKey(rk string) string {
 	right := strings.Index(rk, "}")
 	return rk[left+1 : right]
 }
+func defaultEnvConfigFunc(k string) (string, bool) {
+	if v := os.Getenv("k"); v != "" {
+		return v, true
+	}
+	return "", false
+}
+
+//ParseVariable parse and replace variable in source str
+func ParseVariable(source string, configs func(string) (string, bool)) string {
+	resultKey := reg.FindAllString(source, -1)
+	for _, sourcekey := range resultKey {
+		key, defaultValue := getVariableKey(sourcekey)
+		if value, ok := configs(key); ok {
+			source = strings.Replace(source, sourcekey, value, -1)
+		} else if defaultValue != "" {
+			source = strings.Replace(source, sourcekey, defaultValue, -1)
+		}
+	}
+	return source
+}
+
+func getVariableKey(source string) (key, value string) {
+	if len(source) < 4 {
+		return "", ""
+	}
+	left := strings.Index(source, "{")
+	right := strings.Index(source, "}")
+	k := source[left+1 : right]
+	if strings.Contains(k, ":") {
+		re := strings.Split(k, ":")
+		if len(re) > 1 {
+			return re[0], re[1]
+		}
+		return re[0], ""
+	}
+	return k, ""
+}
 
 func handleConfigFile(file string) error {
 	f, err := os.Stat(file)
@@ -153,15 +189,7 @@ func handleConfigFile(file string) error {
 		return err
 	}
 	bstr := string(body)
-	resultKey := reg.FindAllString(bstr, -1)
-	for _, rk := range resultKey {
-		value := os.Getenv(GetConfigKey(rk))
-		fmt.Printf("key %s value %s \n", GetConfigKey(rk), value)
-		bstr = strings.Replace(bstr, rk, value, -1)
-	}
-	if len(resultKey) == 0 {
-		fmt.Println("")
-	}
+	bstr = ParseVariable(bstr, defaultEnvConfigFunc)
 	return ioutil.WriteFile(file, []byte(bstr), f.Mode())
 }
 func getEnvs() map[string]string {

@@ -1,10 +1,18 @@
+[![Build Status](https://travis-ci.org/barnettzqg/env2file.svg?branch=master)](https://travis-ci.org/barnettzqg/env2file)
 ## 简介
  由环境变量生成配置文件的命令行工具，常用于集成的Docker容器中，容器启动后、服务真正进程启动前执行。
 
 ## 安装
 
-```
+```bash
 wget https://github.com/barnettZQG/env2file/releases/download/v0.1/env2file-linux
+```
+
+docker环境
+```
+docker pull barnettzqg/env2file
+# test
+docker run -it --rm barnettzqg/env2file env2file
 ```
 ## 使用说明
 
@@ -54,3 +62,5 @@ myname=barnett
 
 ## 模版配置文件重写
 `env2file conversion` 命令根据指定的配置文件模版，需要渲染的变量使用 ${XXX} 的形式定义。工具将根据从环境变量中获取值来渲染并重写文件，仅支持一级渲染。
+ * 定义默认值
+ ${XXX:123} 此方式定义的变量若从环境变量中无法读取值时，将使用`123`作为默认值
