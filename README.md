@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/barnettzqg/env2file.svg?branch=master)](https://travis-ci.org/barnettzqg/env2file)
+[![Build Status](https://travis-ci.org/barnettZQG/env2file.svg?branch=master)](https://travis-ci.org/barnettZQG/env2file)
 ## 简介
  由环境变量生成配置文件的命令行工具，常用于集成的Docker容器中，容器启动后、服务真正进程启动前执行。
 
