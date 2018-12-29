@@ -9,4 +9,4 @@ git:
 script:
 - make image
 - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-- docker push barnettzqg/env2file
+- docker push barnett/env2file
