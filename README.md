@@ -5,7 +5,7 @@
 ## 安装
 
 ```bash
-wget https://github.com/barnettZQG/env2file/releases/download/v0.1/env2file-linux
+wget https://github.com/barnettZQG/env2file/releases/download/0.1.1/env2file-linux
 ```
 
 docker环境
