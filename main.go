@@ -141,8 +141,9 @@ func GetConfigKey(rk string) string {
 	right := strings.Index(rk, "}")
 	return rk[left+1 : right]
 }
+
 func defaultEnvConfigFunc(k string) (string, bool) {
-	if v := os.Getenv("k"); v != "" {
+	if v := os.Getenv(k); v != "" {
 		return v, true
 	}
 	return "", false
