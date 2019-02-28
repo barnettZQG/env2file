@@ -46,6 +46,11 @@ custom.cnf:
 ### 关于生成redis配置文件
 读取以`REDISC_`开头的环境变量，以下划线分割,第二部分为配置名
 例如： REDISC_PORT = 6379
+命令：
+```
+env2file create --path redis.conf --perm 0755 --format redis
+```
+
 custom.conf:
 ```
 port 6379
