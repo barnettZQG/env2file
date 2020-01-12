@@ -173,7 +173,7 @@ func getVariableKey(source string) (key, value string) {
 	if strings.Contains(k, ":") {
 		re := strings.Split(k, ":")
 		if len(re) > 1 {
-			return re[0], re[1]
+			return re[0], strings.Join(re[1:], ":")
 		}
 		return re[0], ""
 	}
