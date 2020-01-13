@@ -171,9 +171,9 @@ func getVariableKey(source string) (key, value string) {
 	right := strings.Index(source, "}")
 	k := source[left+1 : right]
 	if strings.Contains(k, ":") {
-		re := strings.Split(k, ":")
+		re := strings.SplitN(k, ":", 2)
 		if len(re) > 1 {
-			return re[0], strings.Join(re[1:], ":")
+			return re[0], re[1]
 		}
 		return re[0], ""
 	}
